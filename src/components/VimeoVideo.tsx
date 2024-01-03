@@ -1,7 +1,7 @@
 'use client';
 
-import { useSpotifyPlayer } from "@/providers/SpotifyPlayer";
 import VimeoPlayer from '@vimeo/player'
+import { useSpotifyPlayer } from "@/providers/SpotifyPlayer";
 import { useRef, useEffect } from "react";
 
 
@@ -10,28 +10,32 @@ export function VimeoVideo({ id }: { id: string }) {
   const spotifyPlayer = useSpotifyPlayer();
 
   useEffect(() => {
+    if (!iframe.current) {
+      return;
+    }
+
     const vimeoPlayer = new VimeoPlayer(iframe.current, {
-      id,
+      id: parseInt(id),
       autoplay: true,
       loop: true,
       responsive: true,
     });
-    
-    vimeoPlayer.on('play', () => {
-      spotifyPlayer.pause()
-      spotifyPlayer.setIsExpanded(false);
-      ;
-    });
 
-  }, []);
-  return (
-    // <div key="vimeo-player" style={{
-    //   padding: '41.89% 0 0 0',
-    //   position: 'relative',
-    // }}>
-      <div ref={iframe}></div>
-      // {/* <div key="video" dangerouslySetInnerHTML={{ __html: `<iframe src="https://player.vimeo.com/video/${id}?h=333381c04c&autoplay=1&loop=1&color=ffffff" style="position:absolute;top:0;left:0;width:100%;height:100%;" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>` }}></div> */}
-    // </div>
+    const onPlay = () => {
+      spotifyPlayer.pause();
+      spotifyPlayer.setIsExpanded(false);
+    }
     
+    vimeoPlayer.on('play', onPlay);
+
+    return () => {
+      vimeoPlayer.off('play', onPlay);
+    }
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [id]);
+
+  return (
+    <div ref={iframe}></div>
   )
 }

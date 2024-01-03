@@ -5,6 +5,12 @@ import { useEffect, useRef, useState, createContext, useContext, useCallback } f
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleUp, faXmark } from '@fortawesome/free-solid-svg-icons';
 
+declare global {
+  interface Window {
+    onSpotifyIframeApiReady: (IFrameAPI: any) => void
+  }
+}
+
 const Context = createContext<{
   isOpen: boolean;
   isPaused: boolean;

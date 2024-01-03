@@ -19,7 +19,7 @@ export default function Motion() {
           <Link key={video.id} href={`/motion/${video.id}`} className="bg-black">
             <div
               className="motion-frame transition-shadow ease-in-out delay-250 aspect-square  hover:shadow-lg flex justify-center items-center"
-              style={{ '--src': `url(${video.thumbnail})` }}
+              style={{ '--src': `url(${video.thumbnail})` } as React.CSSProperties}
             >
               <FontAwesomeIcon icon={faCirclePlay} size="4x" color="white" className="z-50" />
             </div>

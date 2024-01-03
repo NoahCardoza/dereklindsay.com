@@ -2,14 +2,19 @@ import Link from 'next/link'
 import { getVideo, getVideos } from '@/lib/videos';
 import { VimeoVideo } from '@/components/VimeoVideo';
 
+interface PageProps {
+  params: {
+    id: string;
+  };
+}
 
-export async function generateMetadata({ params: { id } }) {
+export async function generateMetadata({ params: { id } }: PageProps) {
   return {
     title: `derek lindsay | ${(await getVideo(id))?.title}`,
   }
 }
 
-export default async function Motion({ params: { id } }: { params: { id: string } }) {
+export default async function Motion({ params: { id } }: PageProps) {
   const videos = await getVideos();
   const videoIndex = videos.findIndex((video) => video.id === id);
   const video = videos[videoIndex];

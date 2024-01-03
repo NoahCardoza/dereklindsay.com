@@ -4,8 +4,8 @@ import React from 'react';
 import { useEffect } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faAngleLeft, faAngleRight, faImage, faImages  } from '@fortawesome/free-solid-svg-icons'
-import Masonry, {ResponsiveMasonry} from "react-responsive-masonry"
-
+import Masonry, { ResponsiveMasonry } from 'react-responsive-masonry'
+import Image from 'next/image';
 
 export default function Slideshow({ album, images }: { album: string, images: { src: string, caption: string }[] }) {
   const [index, setIndexInternal] = React.useState(0);
@@ -63,26 +63,30 @@ export default function Slideshow({ album, images }: { album: string, images: { 
           <ResponsiveMasonry columnsCountBreakPoints={{350: 1, 750: 2, 900: 3}}>
             <Masonry gutter="0.5rem">{
               images.map((image, i) => (
-                // <Image
-                //   key={image.src}
-                //   className="rounded-sm w-full block"
-                //   alt={image.caption}
-                //   src={image.src}
-                //   onClick={() => {
-                //     setBlockViewEnabled(false);
-                //     setIndex(i);
-                //     setTimeout(() => {
+                // <div key={image.src} className="rounded-sm w-full h-full block relative">
+                //   <Image
+                //     style={{ objectFit: "contain" }}
+                //     priority
+                //     fill
+                //     alt={image.caption}
+                //     src={image.src}
+                //     sizes="(min-width: 900px) 33vw, (min-width: 750px) 50vw, 100vw"
+                //     onClick={() => {
+                //       setBlockViewEnabled(false);
                 //       setIndex(i);
-                //     }, 250);
-                //   }}
-                // />
+                //       setTimeout(() => {
+                //         setIndex(i);
+                //       }, 250);
+                //     }}
+                //   />
+                //   </div>
                 <img key={i} className="rounded-sm w-full block" src={image.src} onClick={() => {
                   setBlockViewEnabled(false);
                   setIndex(i);
                   setTimeout(() => {
                     setIndex(i);
                   }, 250);
-                }}></img>
+                }}/>
               ))
             }</Masonry>
           </ResponsiveMasonry>

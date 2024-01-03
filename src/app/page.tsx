@@ -11,7 +11,6 @@ export default function Landing() {
           <Link href="/selected-works">selected works</Link> |
           <Link href="/stills">stills</Link> |
           <Link href="/motion" >motion</Link> |
-          <Link href="/info">info</Link> | 
           <SoundButton />
         </div>
         <Socials className="w-full justify-center" />
