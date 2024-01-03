@@ -2,26 +2,121 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+  font-family: "Mollas";
+  src: url("/fonts/mollas/Mollas-Regular.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Mollas";
+  src: url("/fonts/mollas/Mollas-Bold.ttf") format("truetype");
+  font-weight: bold;
+  font-style: normal;
+}
+
 :root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+  font-family: "Mollas", serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
+html,
+body,
+#root {
+  margin: 0;
+  display: flex;
+  width: 100%;
+  height: 100%;
 }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+#spotify-player {
+  position: fixed;
+  bottom: 0;
+  right: -500px;
+  transition: right 0.5s ease-in-out;
+}
+
+#spotify-player .wrapper {
+  background-color: #282828;
+  margin-right: 16px;
+  margin-bottom: 16px;
+  border-radius: 12px;
+  @apply shadow-lg;
+}
+
+#spotify-player iframe {
+  transition: height 0.5s ease-in-out;
+  height: 80px;
+  width: 400px;
+}
+
+#spotify-player svg {
+  transition: transform 0.5s ease-in-out;
+  transform: rotate(0deg);
+}
+
+#spotify-player.expanded svg {
+  transform: rotate(180deg);
+}
+
+#spotify-player.expanded iframe {
+  height: 360px;
+}
+
+#spotify-player.open {
+  right: 0;
+}
+
+.slideshow-slide {
+  transition: background-image 1s ease-in-out;
+}
+
+.motion-frame {
+  position: relative;
+}
+
+.motion-frame:hover svg {
+  opacity: 1;
+}
+
+.motion-frame svg {
+  opacity: 0;
+  transition: opacity 0.25s ease-in-out;
+}
+
+.motion-frame:hover::before {
+  opacity: 0.6;
+}
+
+.motion-frame::before {
+  transition: opacity 0.25s ease-in-out;
+  content: "";
+  z-index: 1;
+  background-image: var(--src);
+  background-size: cover;
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  bottom: 0px;
+  left: 0px;
+  opacity: 1;
+}
+
+.landing-image {
+  transition: background-image 1s ease-in-out;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+a:hover {
+  text-decoration: underline;
 }
