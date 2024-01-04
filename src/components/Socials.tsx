@@ -1,11 +1,9 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEnvelope, faMusic } from '@fortawesome/free-solid-svg-icons'
 import { faInstagram, faSpotify } from '@fortawesome/free-brands-svg-icons'
-import { getConfig } from "@/lib/hygraph";
+import { HygraphConfig } from "@/lib/hygraph";
 
-export async function Socials({ className = '' }: Readonly<{ className?: string }>) {
-  const config = await getConfig();
-  
+export function Socials({ config, className = '' }: Readonly<{ className?: string, config: HygraphConfig }>) {
   return (
     <div className={`flex ${className}`}>
       <a className="mr-5" target="_blank" href={config.instagramLink}><FontAwesomeIcon icon={faInstagram} /></a>

@@ -121,10 +121,31 @@ a:hover {
   text-decoration: underline;
 }
 
-.sidebar {
+.sidebar ul,
+.sidebar .ul-wrapper {
+  transition: font-size 0.25s, margin 0.25s, padding 0.25s, opacity 0.5s 0.25s;
 }
 
+.sidebar .ul-wrapper {
+  height: 100%;
+}
+
+@media (max-width: 640px) {
+  .sidebar:not(.expanded) .ul-wrapper * {
+    font-size: 0;
+    margin: 0;
+    opacity: 0;
+    padding: 0;
+
+    transition: opacity 0.25s, font-size 0.5s 0.25s, margin 0.5s 0.25s,
+      padding 0.5s 0.25s;
+  }
+}
 @media (min-width: 640px) {
+  .sidebar .ul-wrapper {
+    height: 100%;
+  }
+
   .sidebar {
     max-width: 200px;
     width: 200px;

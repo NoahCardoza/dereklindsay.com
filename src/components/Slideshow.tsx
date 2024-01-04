@@ -38,7 +38,7 @@ export default function Slideshow({ album, images }: { album: string, images: { 
 
   return (
     <div className="h-full flex flex-col">
-      <div className="flex justify-between mb-3 px-3 mt-5 sm:mt-0">
+      <div className="flex justify-between mb-3 px-3 mt-5 sm:mt-0 items-center">
         <h2 className="text-xl">
           {album} ({index + 1}/{images.length}) - {images[index].caption}
         </h2>
