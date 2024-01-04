@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { getVideo, getVideos } from '@/lib/videos';
+import { getVideo, getVideos } from '@/lib/hygraph';
 import { VimeoVideo } from '@/components/VimeoVideo';
 
 interface PageProps {
@@ -16,6 +16,7 @@ export async function generateMetadata({ params: { id } }: PageProps) {
 
 export default async function Motion({ params: { id } }: PageProps) {
   const videos = await getVideos();
+  
   const videoIndex = videos.findIndex((video) => video.id === id);
   const video = videos[videoIndex];
   const nextVideo = videos[(videoIndex + 1) % videos.length];
@@ -24,9 +25,9 @@ export default async function Motion({ params: { id } }: PageProps) {
   return (
     <div className="w-full">
       <h1 className="uppercase text-3xl mb-3">
-        <a target='_blank' href={`https://vimeo.com/${id}`}>{video?.title}</a>  
+        <a target='_blank' href={`https://vimeo.com/${video.vimeoId}`}>{video?.title}</a>  
       </h1>
-      <VimeoVideo id={id} />
+      <VimeoVideo id={video.vimeoId} />
       <div className="flex justify-between mt-3">
         <Link href={`/motion/${previousVideo.id}`}>{previousVideo.title}</Link>
         <Link href={`/motion/${nextVideo.id}`}>{nextVideo.title}</Link>

@@ -1,22 +1,38 @@
 import PictureBook from "@/components/PictureBook";
 import { Metadata } from "next";
+import { getAlbum, getConfig } from "@/lib/hygraph";
+import { RichText } from '@graphcms/rich-text-react-renderer';
+import { getPhotosetPhotos } from "@/lib/flickr";
 
 export const metadata: Metadata = {
   title: 'derek lindsay | info',
 }
 
-export default function Landing() {
+export default async function Info() {
+  const config = await getConfig();
+  const album = await getAlbum('clqycy1yf5u4t0bmtialvsw9m'); // selected works
+  const photoset = await getPhotosetPhotos(album.flickrAlbumId);
+  const images = photoset.map((photo: any) => photo.src);
+
   return (
-    <PictureBook>
-      <h1 className="uppercase text-2xl">Info</h1>
-      <p className="text-lg mt-3">
-        Derek Lindsay is an audio/visual artist interested in exploring the intersection between humanity, art, and nature.
-        He experiments in various mediums and has worked for major studios like Warner Bros. Discovery and artists like Abby Cates and Joiner.
-        He is proficient in visual and audio storytelling.
-      </p>
-      <p className="text-lg mt-3">
-        You can see his sound design portfolio at <a className="text-blue-500" target="_blank" href="https://www.dereklindsayaudio.com">www.dereklindsayaudio.com</a>, or reach him by email at <a className="text-blue-500" target="_blank" href="mailto:dereklindsayaudio@gmail.com">dereklindsayaudio@gmail.com</a>.
-      </p>
+    <PictureBook images={images}>
+      <h2 className="uppercase text-3xl">Info</h2>
+      <RichText
+        content={config.info.raw}
+        renderers={{
+          h1: ({ children }) => <h3 className="text-2xl mt-3">{children}</h3>,
+          h2: ({ children }) => <h4 className="text-xl mt-3">{children}</h4>,
+          h3: ({ children }) => <h5 className="text-lg mt-3">{children}</h5>,
+          p: ({ children }) => <p className="text-lg mt-3">{children}</p>,
+          a: ({ children, openInNewTab, ...params }) => <a
+            {...params}
+            className="text-blue-500"
+            target={openInNewTab ? '_blank' : '_self'}
+          >
+            {children}
+          </a>,
+        }}
+      />
     </PictureBook>
   );
 }

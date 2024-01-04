@@ -1,34 +1,12 @@
-'use client'
+'use client';
 
 import { usePathname } from "next/navigation";
 import Link from "next/link";
-import { useSpotifyPlayer } from "@/providers/SpotifyPlayer";
 import { SoundButton } from "@/components/SoundButton";
 
-export function SidebarNavigation() {
-  const nav = [
-    {
-      children: "home",
-      href: "/"
-    },
-    {
-      children: "selected works",
-      href: "/selected-works"
-    },
-    {
-      children: "stills",
-      href: "/stills"
-    },
-    {
-      children: "motion",
-      href: "/motion"
-    },
-    {
-      children: "info",
-      href: "/info"
-    },
-  ]
-
+export async function SidebarNavigation({ nav }: Readonly<{
+  nav: { children: string, href: string }[]
+}>) {
   const pathname = usePathname()
 
 

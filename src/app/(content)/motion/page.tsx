@@ -1,17 +1,17 @@
 
-import database from "@/database.json";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCirclePlay } from '@fortawesome/free-solid-svg-icons'
 import Link from "next/link";
 
 import { Metadata } from "next";
+import { getVideos } from "@/lib/hygraph";
 
 export const metadata: Metadata = {
   title: 'derek lindsay | motion',
 }
 
-export default function Motion() {
-  const videos = database.videos;
+export default async function Motion() {
+  const videos = await getVideos();
 
   return (
     <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">

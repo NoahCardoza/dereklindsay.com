@@ -1,9 +1,8 @@
 'use client';
 
-import database from "@/database.json";
 import { useEffect, useState } from "react";
 
-export default function PictureBook({ children }: Readonly<{ children: React.ReactNode }>) {
+export default function PictureBook({ children, images }: Readonly<{ children: React.ReactNode, images: string[] }>) {
   const [i, setI] = useState(0);
 
   useEffect(() => {
@@ -23,7 +22,7 @@ export default function PictureBook({ children }: Readonly<{ children: React.Rea
   return (
     <div className="landing-image flex w-full h-full justify-center items-center shadow-lg"
       style={{
-        backgroundImage: `url("${database.images[i % database.images.length].src}")`,
+        backgroundImage: `url("${images[i % images.length]}")`,
       }}
     >
       <div

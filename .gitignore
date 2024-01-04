@@ -2,6 +2,7 @@
 
 # project
 /media
+flickr.py
 
 # dependencies
 /node_modules

@@ -5,7 +5,7 @@ import { useSpotifyPlayer } from "@/providers/SpotifyPlayer";
 import { useRef, useEffect } from "react";
 
 
-export function VimeoVideo({ id }: { id: string }) {
+export function VimeoVideo({ id }: { id: string | number }) {
   const iframe = useRef<HTMLDivElement>(null);
   const spotifyPlayer = useSpotifyPlayer();
 
