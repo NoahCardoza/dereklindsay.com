@@ -5,15 +5,17 @@ import { Socials } from "@/components/Socials";
 import { getAlbum, getAlbums } from "@/lib/hygraph";
 import { getPhotosetPhotos } from "@/lib/flickr";
 import { Fragment } from "react";
+import { dynamicBlurDataUrl } from "@/lib/dynamicBlurDataUrl";
 
 export default async function Landing() {
   const albums = await getAlbums();
   const album = await getAlbum('clqycy1yf5u4t0bmtialvsw9m'); // selected works
   const photoset = await getPhotosetPhotos(album.flickrAlbumId);
   const images = photoset.map((photo: any) => photo.src);
+  const firstImageBlurredPlaceholder = await dynamicBlurDataUrl(images[0]);
 
   return (
-    <PictureBook images={images} className="bg-black">
+    <PictureBook images={images} imagePlaceholder={firstImageBlurredPlaceholder} className="bg-black">
       <h1 className="uppercase font-bold text-4xl">Derek Lindsay</h1>
       <div className="flex text-lg my-4 justify-between w-full">
         {albums.map((album) => (

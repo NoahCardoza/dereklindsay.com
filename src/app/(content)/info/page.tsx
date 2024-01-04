@@ -3,6 +3,7 @@ import { Metadata } from "next";
 import { getAlbum, getConfig } from "@/lib/hygraph";
 import { RichText } from '@graphcms/rich-text-react-renderer';
 import { getPhotosetPhotos } from "@/lib/flickr";
+import { dynamicBlurDataUrl } from "@/lib/dynamicBlurDataUrl";
 
 export const metadata: Metadata = {
   title: 'derek lindsay | info',
@@ -27,9 +28,11 @@ export default async function Info() {
   const album = await getAlbum('clqycy1yf5u4t0bmtialvsw9m'); // selected works
   const photoset = await getPhotosetPhotos(album.flickrAlbumId);
   const images = photoset.map((photo: any) => photo.src);
+  const firstImageBlurredPlaceholder = await dynamicBlurDataUrl(images[0]);
+
 
   return (
-    <PictureBook images={images} className="shadow-lg rounded-md">
+    <PictureBook images={images} imagePlaceholder={firstImageBlurredPlaceholder} className="shadow-lg rounded-md">
       <h2 className="uppercase text-3xl">Info</h2>
       <RichText
         content={config.info.raw}

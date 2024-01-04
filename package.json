@@ -20,8 +20,7 @@
     "next": "14.0.4",
     "react": "^18",
     "react-dom": "^18",
-    "react-responsive-masonry": "^2.1.7",
-    "react-spring": "^9.7.3"
+    "react-responsive-masonry": "^2.1.7"
   },
   "devDependencies": {
     "@types/node": "^20",
