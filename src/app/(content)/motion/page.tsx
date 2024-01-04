@@ -8,6 +8,20 @@ import { getVideos } from "@/lib/hygraph";
 
 export const metadata: Metadata = {
   title: 'derek lindsay | motion',
+  openGraph: {
+    type: 'website',
+    locale: 'en_US',
+    title: 'derek lindsay | motion',
+    url: '/motion',
+    images: [
+      {
+        url: 'https://i.vimeocdn.com/portrait/87513765_288x288',
+        width: 200,
+        height: 200,
+        alt: '',
+      },
+    ],
+  },
 }
 
 export default async function Motion() {

@@ -7,13 +7,27 @@ interface PageProps {
   params: {
     slug: string;
   };
-}
+};
 
 export async function generateMetadata({ params: { slug } }: PageProps) {
   const album = await getAlbumBySlug(slug);
+  const images = await getPhotosetPhotos(album.flickrAlbumId);
   
   return {
     title: `derek lindsay | ${album?.title}`,
+    openGraph: {
+      type: 'website',
+      locale: 'en_US',
+      title: `derek lindsay | ${album?.title}`,
+      images: [
+        {
+          url: images[0].src,
+          width: 200,
+          height: 200,
+          alt: '',
+        },
+      ],
+    },
   }
 }
 

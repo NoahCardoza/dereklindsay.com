@@ -6,6 +6,20 @@ import { getPhotosetPhotos } from "@/lib/flickr";
 
 export const metadata: Metadata = {
   title: 'derek lindsay | info',
+  openGraph: {
+    type: 'website',
+    locale: 'en_US',
+    title: 'derek lindsay | info',
+    url: '/info',
+    images: [
+      {
+        url: 'https://media.licdn.com/dms/image/D5603AQG3wmh1W_6G6g/profile-displayphoto-shrink_800_800/0/1689728168421?e=1709769600&v=beta&t=-cG66DHHSd-X4Hnt-VsUhGJRpc51DkuzV_8M6reU_j8',
+        width: 200,
+        height: 200,
+        alt: '',
+      },
+    ],
+  }
 }
 
 export default async function Info() {

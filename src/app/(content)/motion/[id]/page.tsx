@@ -9,8 +9,24 @@ interface PageProps {
 }
 
 export async function generateMetadata({ params: { id } }: PageProps) {
+  const video = await getVideo(id);
+  
   return {
     title: `derek lindsay | ${(await getVideo(id))?.title}`,
+    openGraph: {
+      type: 'website',
+      locale: 'en_US',
+      title: `derek lindsay | ${(await getVideo(id))?.title}`,
+      url: `/motion/${id}`,
+      images: [
+        {
+          url: video.thumbnail,
+          width: 200,
+          height: 200,
+          alt: '',
+        },
+      ],
+    },
   }
 }
 

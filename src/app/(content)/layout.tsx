@@ -9,8 +9,6 @@ export default async function RootLayout({
 }>) {
   const albums = await getAlbums();
 
-  
-  
   const nav = [
     {
       children: "home",
