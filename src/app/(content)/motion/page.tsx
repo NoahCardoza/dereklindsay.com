@@ -28,7 +28,7 @@ export default async function Motion() {
   const videos = await getVideos();
 
   return (
-    <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+    <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-3 sm:p-0">
         {videos.map((video) => (
           <Link key={video.id} href={`/motion/${video.id}`} className="bg-black">
             <div

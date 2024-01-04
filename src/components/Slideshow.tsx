@@ -30,9 +30,7 @@ export default function Slideshow({ album, images }: { album: string, images: { 
         setIndex((index + 1) % images.length);
       }
     }
-
     document.addEventListener('keydown', callback);
-
     return () => {
       document.removeEventListener('keydown', callback);
     }
@@ -40,10 +38,10 @@ export default function Slideshow({ album, images }: { album: string, images: { 
 
   return (
     <div className="h-full flex flex-col">
-      <div className="flex justify-between mb-3 ">
-        <div>
+      <div className="flex justify-between mb-3 px-3 mt-5 sm:mt-0">
+        <h2 className="text-xl">
           {album} ({index + 1}/{images.length}) - {images[index].caption}
-        </div>
+        </h2>
         <div>
           <button onClick={
             () => {
@@ -58,7 +56,7 @@ export default function Slideshow({ album, images }: { album: string, images: { 
           </button>
         </div>
       </div>
-      <div className={`rounded-lg shadow-md bg-slate-10 ${blockViewImageExplorerEnabled ? 'overflow-y-auto p-5' : 'flex flex-grow overflow-hidden'}`}>
+      <div className={`sm:rounded-lg sm:shadow-md bg-slate-10 ${blockViewImageExplorerEnabled ? 'overflow-y-auto p-5' : 'flex flex-grow overflow-hidden'}`}>
         {blockViewImageExplorerEnabled ? (
           <ResponsiveMasonry columnsCountBreakPoints={{350: 1, 750: 2, 900: 3}}>
             <Masonry gutter="0.5rem">{
@@ -82,7 +80,7 @@ export default function Slideshow({ album, images }: { album: string, images: { 
         ) : (
           <>
           <button
-            className="flex items-center px-3 bg-slate-50"
+            className="flex items-center px-3 bg-slate-50 hidden sm:block"
             onClick={() => { changeIndex(-1); }}
           >
             <FontAwesomeIcon icon={faAngleLeft} />
@@ -127,7 +125,7 @@ export default function Slideshow({ album, images }: { album: string, images: { 
             </div>
         </div>
           <button
-            className="flex items-center px-3 bg-slate-50"
+            className="flex items-center px-3 bg-slate-50 hidden sm:block"
             onClick={() => { changeIndex(1); }}
           >
             <FontAwesomeIcon icon={faAngleRight} />

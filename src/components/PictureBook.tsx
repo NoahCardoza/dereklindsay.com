@@ -67,7 +67,7 @@ export default function PictureBook({ children, images, imagePlaceholder, classN
       />
     
       <div
-        className="flex z-5 flex-col items-center p-8 rounded-md shadow-md"
+        className="flex z-10 flex-col items-center p-8 sm:rounded-md shadow-md"
         style={{
           width: '400px',
           backgroundColor: '#FFFFFFD0',

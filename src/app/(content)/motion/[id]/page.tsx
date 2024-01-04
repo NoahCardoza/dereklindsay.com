@@ -39,12 +39,12 @@ export default async function Motion({ params: { id } }: PageProps) {
   const previousVideo = videos[(videoIndex - 1 + videos.length) % videos.length];  
   
   return (
-    <div className="w-full">
+    <div className="w-full p-3 sm:p-0">
       <h1 className="uppercase text-3xl mb-3">
         <a target='_blank' href={`https://vimeo.com/${video.vimeoId}`}>{video?.title}</a>  
       </h1>
       <VimeoVideo id={video.vimeoId} />
-      <div className="flex justify-between mt-3">
+      <div className="flex flex-col sm:flex-row sm:justify-between  mt-3">
         <Link href={`/motion/${previousVideo.id}`}>{previousVideo.title}</Link>
         <Link href={`/motion/${nextVideo.id}`}>{nextVideo.title}</Link>
         </div>

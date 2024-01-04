@@ -121,6 +121,16 @@ a:hover {
   text-decoration: underline;
 }
 
+.sidebar {
+}
+
+@media (min-width: 640px) {
+  .sidebar {
+    max-width: 200px;
+    width: 200px;
+  }
+}
+
 .animate-fade-out {
   animation: fadeIn 1s ease-in-out forwards;
 }
