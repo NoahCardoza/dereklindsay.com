@@ -1,8 +1,8 @@
 // dynamicBlurDataUrl.js
-const baseUrl =
-  process.env.NODE_ENV === 'development'
-    ? 'http://localhost:3000/'
-    : process.env.NEXT_PUBLIC_DOMAIN;
+const baseUrl = `${process.env.VERCEL_URL
+  ? 'https://' + process.env.VERCEL_URL
+  : 'http://localhost:3000'
+  }`;
 
 const toBase64 = (str: string) =>
     typeof window === 'undefined'

@@ -53,9 +53,11 @@ export default function PictureBook({ children, images, imagePlaceholder, classN
         sizes="100vw"
         className={`${beginAnimation ? 'animate-fade-out' : ''}`}
         priority
-        onLoad={() => setTimeout(() => {
-        setFirstLoad(false)
-      }, 1000)}
+        onLoad={
+          () => setTimeout(() => {
+            setFirstLoad(false)
+          }, 1000)
+        }
           {
            ...(isFirstLoad ? {
             placeholder: "blur",
