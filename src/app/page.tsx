@@ -13,7 +13,7 @@ export default async function Landing() {
   const images = photoset.map((photo: any) => photo.src);
 
   return (
-    <PictureBook images={images}>
+    <PictureBook images={images} className="bg-black">
       <h1 className="uppercase font-bold text-4xl">Derek Lindsay</h1>
       <div className="flex text-lg my-4 justify-between w-full">
         {albums.map((album) => (

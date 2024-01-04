@@ -13,7 +13,7 @@ export const metadata: Metadata = {
     url: '/info',
     images: [
       {
-        url: 'https://media.licdn.com/dms/image/D5603AQG3wmh1W_6G6g/profile-displayphoto-shrink_800_800/0/1689728168421?e=1709769600&v=beta&t=-cG66DHHSd-X4Hnt-VsUhGJRpc51DkuzV_8M6reU_j8',
+        url: 'https://live.staticflickr.com/65535/53441077111_abbb4022f6_w.jpg',
         width: 200,
         height: 200,
         alt: '',
@@ -29,7 +29,7 @@ export default async function Info() {
   const images = photoset.map((photo: any) => photo.src);
 
   return (
-    <PictureBook images={images}>
+    <PictureBook images={images} className="shadow-lg rounded-md">
       <h2 className="uppercase text-3xl">Info</h2>
       <RichText
         content={config.info.raw}

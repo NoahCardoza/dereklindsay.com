@@ -15,7 +15,7 @@ export const metadata: Metadata = {
     title: 'derek lindsay',
     images: [
       {
-        url: 'https://media.licdn.com/dms/image/D5603AQG3wmh1W_6G6g/profile-displayphoto-shrink_800_800/0/1689728168421?e=1709769600&v=beta&t=-cG66DHHSd-X4Hnt-VsUhGJRpc51DkuzV_8M6reU_j8',
+        url: 'https://live.staticflickr.com/65535/53441077111_abbb4022f6_w.jpg',
         width: 800,
         height: 800,
         alt: 'derek lindsay',
