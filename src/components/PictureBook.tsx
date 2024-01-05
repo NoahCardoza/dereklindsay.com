@@ -1,25 +1,8 @@
 'use client';
 
-import { createContext, useContext, useEffect, useRef, useState, forwardRef, useImperativeHandle, use } from "react";
+import { useEffect, useState } from "react";
 
 import Image from 'next/image';
-
-export interface PictureBookBackgroundContext {
-  nextImage: () => void;
-  prevImage: () => void;
-  goToImage: (i: number) => void;
-}
-
-const Context = createContext<PictureBookBackgroundContext | null>(null);
-
-export function usePictureBookBackground() {
-  const context = useContext(Context);
-  if (!context) {
-    throw new Error('usePictureBookBackground must be used within a PictureBookBackground');
-  }
-  
-  return context;
-}
 
 type PictureBookBackgroundProps = {
   children?: React.ReactNode,
@@ -29,7 +12,7 @@ type PictureBookBackgroundProps = {
   selected: number,
 } 
 
-export const PictureBookBackground = forwardRef<PictureBookBackgroundContext, PictureBookBackgroundProps>(({ children, images, imagePlaceholder, className = '', selected }, ref) => {
+export const PictureBookBackground = ({ children, images, imagePlaceholder, className = '', selected }: PictureBookBackgroundProps) => {
   return (
     <div className={`relative bg-white flex w-full h-full justify-center items-center overflow-hidden ${className}`}>
       {images.map((image, i) => (
@@ -56,8 +39,7 @@ export const PictureBookBackground = forwardRef<PictureBookBackgroundContext, Pi
       {children}
     </div>
   );
-});
-PictureBookBackground.displayName = 'PictureBookBackground';
+}
 
 export default function PictureBook({ children, images, imagePlaceholder, className = '' }: Readonly<{ children: React.ReactNode, images: string[], imagePlaceholder: string, className: string }>) {
   const [isFirstLoad, setFirstLoad] = useState(true);

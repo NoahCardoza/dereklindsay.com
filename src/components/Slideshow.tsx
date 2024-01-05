@@ -6,14 +6,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faAngleLeft, faAngleRight, faImage, faImages  } from '@fortawesome/free-solid-svg-icons'
 import Masonry, { ResponsiveMasonry } from 'react-responsive-masonry'
 import Image from 'next/image';
-import { PictureBookBackground, PictureBookBackgroundContext } from './PictureBook';
+import { PictureBookBackground } from './PictureBook';
 import { unstable_getImgProps as getImgProps } from 'next/image';
 
 export default function Slideshow({ album, images, firstImageBlurredPlaceholder }: { firstImageBlurredPlaceholder: string, album: string, images: { src: string, caption: string }[] }) {
   const [index, setIndexInternal] = React.useState(0);
   const [blockViewImageExplorerEnabled, setBlockViewEnabled] = React.useState(false);
   const imageThumbnails = React.useRef<Map<number, HTMLButtonElement | null>>(new Map());
-  const pictureBookBackgroundRef = useRef<PictureBookBackgroundContext | null>(null);
 
 
   const setIndex = (i: number) => {
@@ -65,15 +64,12 @@ export default function Slideshow({ album, images, firstImageBlurredPlaceholder 
               <Masonry gutter={blockViewImageExplorerEnabled ? "0.5rem" : '0'}>{
                 images.map((image, i) => (
                   <img
-                    key={image}
+                    key={image.src}
                     {...getImgProps({ src: image.src, alt: `Caption: ${image.caption}`, width: 300, height: 300 }).props}
                     className="rounded-sm w-full block cursor-pointer"
                     onClick={() => {
                       setBlockViewEnabled(false);
                       setIndex(i);
-                      setTimeout(() => {
-                        setIndex(i);
-                      }, 250);
                     }}
                   />
                 ))
@@ -91,7 +87,6 @@ export default function Slideshow({ album, images, firstImageBlurredPlaceholder 
                 <PictureBookBackground
                   className=''
                   selected={index}
-                  ref={pictureBookBackgroundRef}
                   images={images.map(({ src }) => src)}
                   imagePlaceholder={firstImageBlurredPlaceholder}
                 >
