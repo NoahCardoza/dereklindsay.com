@@ -2,6 +2,7 @@
 import Slideshow from "@/components/Slideshow";
 import { getAlbumBySlug, getAlbums } from "@/lib/hygraph";
 import { getPhotosetPhotos } from "@/lib/flickr";
+import { dynamicBlurDataUrl } from "@/lib/dynamicBlurDataUrl";
 
 interface PageProps {
   params: {
@@ -42,10 +43,13 @@ export async function generateStaticParams() {
 export default async function AlbumPage({ params: { slug } }: PageProps) {
   const album = await getAlbumBySlug(slug);
   const images = await getPhotosetPhotos(album.flickrAlbumId);
+  const firstImageBlurredPlaceholder = await dynamicBlurDataUrl(images[0]);
   
   return (  
     <Slideshow
       album={album.title}
-      images={images} />  
+      images={images}
+      firstImageBlurredPlaceholder={firstImageBlurredPlaceholder}
+    />  
   );
 }

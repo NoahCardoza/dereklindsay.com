@@ -1,7 +1,63 @@
 'use client';
 
-import { useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useRef, useState, forwardRef, useImperativeHandle, use } from "react";
+
 import Image from 'next/image';
+
+export interface PictureBookBackgroundContext {
+  nextImage: () => void;
+  prevImage: () => void;
+  goToImage: (i: number) => void;
+}
+
+const Context = createContext<PictureBookBackgroundContext | null>(null);
+
+export function usePictureBookBackground() {
+  const context = useContext(Context);
+  if (!context) {
+    throw new Error('usePictureBookBackground must be used within a PictureBookBackground');
+  }
+  
+  return context;
+}
+
+type PictureBookBackgroundProps = {
+  children?: React.ReactNode,
+  images: string[],
+  imagePlaceholder: string,
+  className: string,
+  selected: number,
+} 
+
+export const PictureBookBackground = forwardRef<PictureBookBackgroundContext, PictureBookBackgroundProps>(({ children, images, imagePlaceholder, className = '', selected }, ref) => {
+  return (
+    <div className={`relative bg-white flex w-full h-full justify-center items-center overflow-hidden ${className}`}>
+      {images.map((image, i) => (
+        <Image
+          key={image}
+          src={image}
+          alt=''
+          fill
+          quality={100}
+          className={`w-100 h-100 ease-in-out`}
+          style={{
+            objectFit: 'contain',
+            objectPosition: 'center',
+            opacity: i === selected ? 1 : 0,
+            filter: i === selected ? 'blur(0px)' : 'blur(3px)',
+            transform: (i === selected ? 'scale(1.001)' : 'scale(2)') + (i === selected ? 'rotate(0deg)' : (i % 2 == 0 ? 'rotate(20deg)' : (i % 3 == 0) ? 'rotate(-20deg)' : 'rotate(0deg)')),
+            transitionDuration: '3s',
+            transitionProperty: 'opacity filter transform',
+          }}
+          sizes="100vw"
+          priority={i === selected}
+        />
+      ))}
+      {children}
+    </div>
+  );
+});
+PictureBookBackground.displayName = 'PictureBookBackground';
 
 export default function PictureBook({ children, images, imagePlaceholder, className = '' }: Readonly<{ children: React.ReactNode, images: string[], imagePlaceholder: string, className: string }>) {
   const [isFirstLoad, setFirstLoad] = useState(true);

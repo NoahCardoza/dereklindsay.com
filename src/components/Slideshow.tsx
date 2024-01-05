@@ -1,16 +1,19 @@
 'use client';
 
-import React from 'react';
+import React, { useRef } from 'react';
 import { useEffect } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faAngleLeft, faAngleRight, faImage, faImages  } from '@fortawesome/free-solid-svg-icons'
 import Masonry, { ResponsiveMasonry } from 'react-responsive-masonry'
 import Image from 'next/image';
+import { PictureBookBackground, PictureBookBackgroundContext } from './PictureBook';
+import { unstable_getImgProps as getImgProps } from 'next/image';
 
-export default function Slideshow({ album, images }: { album: string, images: { src: string, caption: string }[] }) {
+export default function Slideshow({ album, images, firstImageBlurredPlaceholder }: { firstImageBlurredPlaceholder: string, album: string, images: { src: string, caption: string }[] }) {
   const [index, setIndexInternal] = React.useState(0);
   const [blockViewImageExplorerEnabled, setBlockViewEnabled] = React.useState(false);
-  const imageThumbnails = React.useRef<Map<number, HTMLDivElement | null>>(new Map());
+  const imageThumbnails = React.useRef<Map<number, HTMLButtonElement | null>>(new Map());
+  const pictureBookBackgroundRef = useRef<PictureBookBackgroundContext | null>(null);
 
 
   const setIndex = (i: number) => {
@@ -57,55 +60,64 @@ export default function Slideshow({ album, images }: { album: string, images: { 
         </div>
       </div>
       <div className={`sm:rounded-lg sm:shadow-md bg-slate-10 ${blockViewImageExplorerEnabled ? 'overflow-y-auto p-5' : 'flex flex-grow overflow-hidden'}`}>
-        {blockViewImageExplorerEnabled ? (
-          <ResponsiveMasonry columnsCountBreakPoints={{350: 1, 750: 2, 900: 3}}>
-            <Masonry gutter="0.5rem">{
-              images.map((image, i) => (
-                <img
-                  key={i}
-                  className="rounded-sm w-full block"
-                  alt={`Caption: ${image.caption}`}
-                  src={image.src}
-                  onClick={() => {
-                    setBlockViewEnabled(false);
-                    setIndex(i);
-                    setTimeout(() => {
+        <div className={`transition-opacity duration-1000 ease-in-out ${blockViewImageExplorerEnabled ? 'opacity-100' : 'opacity-0 '}`}>
+            <ResponsiveMasonry columnsCountBreakPoints={{350: 1, 750: 2, 900: 3}}>
+              <Masonry gutter={blockViewImageExplorerEnabled ? "0.5rem" : '0'}>{
+                images.map((image, i) => (
+                  <img
+                    key={image}
+                    {...getImgProps({ src: image.src, alt: `Caption: ${image.caption}`, width: 300, height: 300 }).props}
+                    className="rounded-sm w-full block cursor-pointer"
+                    onClick={() => {
+                      setBlockViewEnabled(false);
                       setIndex(i);
-                    }, 250);
-                  }}
-                />
-              ))
-            }</Masonry>
+                      setTimeout(() => {
+                        setIndex(i);
+                      }, 250);
+                    }}
+                  />
+                ))
+              }</Masonry>
           </ResponsiveMasonry>
-        ) : (
-          <>
+        </div>
+        <div className={(!blockViewImageExplorerEnabled ? 'opacity-100 h-full' : 'opacity-0 pointer-events-none	') + ' w-full flex min-w-0 transition-opacity duration-1000 ease-in-out'}>
           <button
             className="flex items-center px-3 bg-slate-50 hidden sm:block"
-            onClick={() => { changeIndex(-1); }}
+            onClick={() => { changeIndex(-1) }}
           >
             <FontAwesomeIcon icon={faAngleLeft} />
           </button>
-        <div className="w-full h-full flex flex-col min-w-0">
-          <div
-            className="slideshow-slide w-full h-full"
-            style={{
-              backgroundImage: `url("${images[index].src}")`,
-              backgroundSize: 'contain',
-              backgroundPosition: 'center',
-              backgroundRepeat: 'no-repeat',
-            }}
-          >    
-            </div>
+          <div className="w-full h-full flex flex-col min-w-0">
+                <PictureBookBackground
+                  className=''
+                  selected={index}
+                  ref={pictureBookBackgroundRef}
+                  images={images.map(({ src }) => src)}
+                  imagePlaceholder={firstImageBlurredPlaceholder}
+                >
+                  <button
+                  className="absolute top-0 left-0 w-1/2 h-full"
+                  onClick={() => { changeIndex(-1) }}
+                />
+                <button
+                  className="absolute top-0 right-0 w-1/2 h-full"
+                  onClick={() => { changeIndex(1) }}
+                />
+                </PictureBookBackground>
             <div className="flex justify-center min-w-0">
             <div className="overflow-x-scroll whitespace-nowrap pb-1 mb-1" >
             {images.map((image, i) => (
-              <div
+              <button
                 ref={(el) => {
                   imageThumbnails.current.set(i, el);
                 }}
                 key={i}
                 className={`relative overflow-hidden rounded-sm inline-block w-12 h-12 m-1 ${i === index ? 'opacity-60' : ''}`}
-                onClick={() => setIndex(i)}
+                onClick={
+                  () => {
+                    setIndex(i)
+                  }
+                }
               >
                 <Image
                   src={image.src}
@@ -119,18 +131,20 @@ export default function Slideshow({ album, images }: { album: string, images: { 
                   width={48}
                   height={48}
                 />
-              </div>
+              </button>
             ))}
           </div>
             </div>
         </div>
           <button
             className="flex items-center px-3 bg-slate-50 hidden sm:block"
-            onClick={() => { changeIndex(1); }}
+                onClick={() => { 
+                  changeIndex(1);
+             }}
           >
             <FontAwesomeIcon icon={faAngleRight} />
             </button>
-            </>)}
+            </div>
           </div>
         
       </div>
