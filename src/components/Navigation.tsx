@@ -26,7 +26,7 @@ export function SidebarNavigation({ nav, config }: Readonly<{
             <FontAwesomeIcon icon={isExpanded ? faXmark : faBars} size="lg"/>
           </button>
         </div>
-        <div className="ul-wrapper order-3 sm:order-2 border-b-2 pb-6 sm:pb-0 sm:border-b-0 border-gray-200">
+        <div className="ul-wrapper order-3 sm:order-2 border-b shadow-sm  sm:shadow-none pb-6 sm:pb-0 sm:border-b-0 border-gray-200">
           <ul className="px-6">
             {nav.map((item) => (
               <li

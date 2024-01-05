@@ -46,10 +46,6 @@ body,
 
 #spotify-player .wrapper {
   background-color: #282828;
-  margin-right: 16px;
-  margin-bottom: 16px;
-  border-radius: 12px;
-  @apply shadow-lg;
 }
 
 #spotify-player iframe {
@@ -74,10 +70,30 @@ body,
 #spotify-player.open {
   right: 0;
 }
+@media (min-width: 640px) {
+  #spotify-player .wrapper {
+    margin-right: 16px;
+    margin-bottom: 16px;
+    border-radius: 12px;
+    @apply shadow-lg;
+  }
+}
 
-/* .slideshow-slide {
-  transition: background-image 1s ease-in-out;
-} */
+@media (max-width: 640px) {
+  #spotify-player iframe {
+    width: 100%;
+  }
+
+  #spotify-player {
+    right: 0;
+    left: 0;
+    bottom: -600px;
+  }
+
+  #spotify-player.open {
+    bottom: -1px;
+  }
+}
 
 .motion-frame {
   position: relative;

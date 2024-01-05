@@ -32,7 +32,7 @@ export default function PictureBook({ children, images, imagePlaceholder, classN
   }, [isFirstLoad]);
 
   return (
-    <div className={`relative flex w-full h-full justify-center items-center overflow-none ${className}`}>
+    <div className={`relative flex w-full h-full justify-center items-center overflow-hidden overflow-y-auto ${className}`}>
       <Image
         src={images[j]}
         alt=''
@@ -67,9 +67,8 @@ export default function PictureBook({ children, images, imagePlaceholder, classN
       />
     
       <div
-        className="flex z-10 flex-col items-center p-8 sm:rounded-md shadow-md"
+        className="flex w-full sm:max-w-md z-10 flex-col items-center p-4 py-8 sm:p-8 sm:rounded-md shadow-md"
         style={{
-          width: '400px',
           backgroundColor: '#FFFFFFD0',
           backdropFilter: 'blur(3px)',            
         }}

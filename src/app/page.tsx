@@ -18,7 +18,7 @@ export default async function Landing() {
   return (
     <PictureBook images={images} imagePlaceholder={firstImageBlurredPlaceholder} className="bg-black">
       <h1 className="uppercase font-bold text-4xl">Derek Lindsay</h1>
-      <div className="flex text-lg my-4 justify-between w-full">
+      <div className="flex text-lg my-4 justify-between w-full max-w-80">
         {albums.map((album) => (
           <Fragment key={album.id}>
             <Link href={`/album/${album.slug}`}>{album.title}</Link> |
