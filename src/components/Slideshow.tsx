@@ -11,7 +11,7 @@ import { unstable_getImgProps as getImgProps } from 'next/image';
 
 export default function Slideshow({ album, images, firstImageBlurredPlaceholder }: { firstImageBlurredPlaceholder: string, album: string, images: { src: string, caption: string }[] }) {
   const [index, setIndexInternal] = React.useState(0);
-  const [blockViewImageExplorerEnabled, setBlockViewEnabled] = React.useState(false);
+  const [blockViewImageExplorerEnabled, setBlockViewEnabled] = React.useState(true);
   const imageThumbnails = React.useRef<Map<number, HTMLButtonElement | null>>(new Map());
 
 
