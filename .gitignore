@@ -32,6 +32,9 @@ yarn-error.log*
 # local env files
 .env*.local
 
+# iloom local settings
+.iloom/settings.local.json
+
 # vercel
 .vercel
 
