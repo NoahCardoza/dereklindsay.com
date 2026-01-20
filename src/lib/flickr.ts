@@ -3,6 +3,7 @@ const BASE_URL = 'https://api.flickr.com/services/rest';
 type FlickrPhoto = {
   id: string;
   src: string;
+  srcLowRes: string;
   caption: string;
   description: string;
 };
@@ -36,6 +37,7 @@ export async function getPhotosetPhotos(photosetId: string): Promise<FlickrPhoto
     return ({
       id: photo.id,
       src: `https://live.staticflickr.com/${photo.server}/${photo.id}_${photo.originalsecret}_o.${photo.originalformat}`,
+      srcLowRes: `https://farm${photo.farm}.staticflickr.com/${photo.server}/${photo.id}_${photo.secret}.jpg`,
       caption: photo.title,
       description: photo.description._content,
     });

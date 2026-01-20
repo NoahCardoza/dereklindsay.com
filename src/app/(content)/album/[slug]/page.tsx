@@ -55,7 +55,7 @@ export default async function AlbumPage(props: PageProps) {
 
   const album = await getAlbumBySlug(slug);
   const images = await getPhotosetPhotos(album.flickrAlbumId);
-  const firstImageBlurredPlaceholder = await dynamicBlurDataUrl(images[0].src);
+  const firstImageBlurredPlaceholder = await dynamicBlurDataUrl(images[0].srcLowRes);
 
   return (  
     <Slideshow

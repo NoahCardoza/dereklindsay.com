@@ -11,8 +11,8 @@ export default async function Landing() {
   const albums = await getAlbums();
   const album = await getAlbum('clqycy1yf5u4t0bmtialvsw9m'); // selected works
   const photoset = await getPhotosetPhotos(album.flickrAlbumId);
-  const images = photoset.map((photo: any) => photo.src);
-  const firstImageBlurredPlaceholder = await dynamicBlurDataUrl(images[0]);
+  const images = photoset.map((photo) => photo.src);
+  const firstImageBlurredPlaceholder = await dynamicBlurDataUrl(photoset[0].srcLowRes);
   const config = await getConfig();
 
   return (

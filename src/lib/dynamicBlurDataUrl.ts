@@ -7,9 +7,13 @@ const toBase64 = (str: string) =>
     : window.btoa(str);
 
 async function fetchAsBuffer(url: string) {
+  const startedAt = Date.now();
   const res = await fetch(url);
   if (!res.ok) throw new Error(`Failed to fetch ${url}: ${res.status}`);
-  return Buffer.from(await res.arrayBuffer());
+  const buffer = Buffer.from(await res.arrayBuffer());
+  const elapsedMs = Date.now() - startedAt;
+  console.debug(`[dynamicBlurDataUrl] fetched ${url} in ${elapsedMs}ms`);
+  return buffer;
 }
 
 export async function dynamicBlurDataUrl(imageUrl: string) {
@@ -19,7 +23,7 @@ export async function dynamicBlurDataUrl(imageUrl: string) {
 
     // 2) downscale aggressively
     const tiny = await sharp(input)
-      .resize(16) // width 16, auto height
+      .resize(256) // width 256, auto height
       .toFormat("webp", { quality: 50 }) // or "avif" if you prefer
       .toBuffer();
 
