@@ -1,7 +1,7 @@
-import { ApolloClient, InMemoryCache, gql } from '@apollo/client';
+import { ApolloClient, HttpLink, InMemoryCache, gql } from '@apollo/client';
 
 const client = new ApolloClient({
-  uri: process.env.HYGRAPH_API_URL,
+  link: new HttpLink({ uri: process.env.HYGRAPH_API_URL }),
   cache: new InMemoryCache(),
 });
 

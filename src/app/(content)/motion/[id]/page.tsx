@@ -3,14 +3,20 @@ import { getVideo, getVideos } from '@/lib/hygraph';
 import { VimeoVideo } from '@/components/VimeoVideo';
 
 interface PageProps {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 }
 
-export async function generateMetadata({ params: { id } }: PageProps) {
+export async function generateMetadata(props: PageProps) {
+  const params = await props.params;
+
+  const {
+    id
+  } = params;
+
   const video = await getVideo(id);
-  
+
   return {
     title: `derek lindsay | ${(await getVideo(id))?.title}`,
     openGraph: {
@@ -30,14 +36,20 @@ export async function generateMetadata({ params: { id } }: PageProps) {
   }
 }
 
-export default async function Motion({ params: { id } }: PageProps) {
+export default async function Motion(props: PageProps) {
+  const params = await props.params;
+
+  const {
+    id
+  } = params;
+
   const videos = await getVideos();
-  
+
   const videoIndex = videos.findIndex((video) => video.id === id);
   const video = videos[videoIndex];
   const nextVideo = videos[(videoIndex + 1) % videos.length];
-  const previousVideo = videos[(videoIndex - 1 + videos.length) % videos.length];  
-  
+  const previousVideo = videos[(videoIndex - 1 + videos.length) % videos.length];
+
   return (
     <div className="w-full p-3 sm:p-0">
       <h1 className="uppercase text-3xl mb-3">

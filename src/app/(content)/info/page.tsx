@@ -27,9 +27,8 @@ export default async function Info() {
   const config = await getConfig();
   const album = await getAlbum('clqycy1yf5u4t0bmtialvsw9m'); // selected works
   const photoset = await getPhotosetPhotos(album.flickrAlbumId);
-  const images = photoset.map((photo: any) => photo.src);
+  const images = photoset.map(photo => photo.src);
   const firstImageBlurredPlaceholder = await dynamicBlurDataUrl(images[0]);
-
 
   return (
     <PictureBook images={images} imagePlaceholder={firstImageBlurredPlaceholder} className="shadow-lg rounded-md">
