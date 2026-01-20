@@ -1,5 +1,13 @@
 const BASE_URL = 'https://api.flickr.com/services/rest';
 
+type FlickrPhoto = {
+  id: string;
+  src: string;
+  caption: string;
+  description: string;
+};
+
+
 async function flickr(method: string, params: Record<string, string>) {
   const url = new URL(BASE_URL);
   url.searchParams.append('method', method);
@@ -16,20 +24,21 @@ async function flickr(method: string, params: Record<string, string>) {
   return data;
 }
 
-export async function getPhotosetPhotos(photosetId: string) { 
+export async function getPhotosetPhotos(photosetId: string): Promise<FlickrPhoto[]> { 
   const params = {
     photoset_id: photosetId,
-    extras: 'description,url_o',
+    extras: 'description,originalformat,originalsecret,original_format',
   };
 
   const { photoset } = await flickr('flickr.photosets.getPhotos', params);
 
-  return photoset.photo.map((photo: any) => ({
-    id: photo.id,
-    src: photo.url_o,
-    caption: photo.title,
-    description: photo.description._content,
-    // TODO: `https://farm${photo.farm}.staticflickr.com/${photo.server}/${photo.id}_${photo.secret}_b.jpg`
-  }));
+  return photoset.photo.map((photo: any) => {
+    return ({
+      id: photo.id,
+      src: `https://live.staticflickr.com/${photo.server}/${photo.id}_${photo.originalsecret}_o.${photo.originalformat}`,
+      caption: photo.title,
+      description: photo.description._content,
+    });
+  });
 }
     

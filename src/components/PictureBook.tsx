@@ -14,7 +14,7 @@ type PictureBookBackgroundProps = {
 
 export const PictureBookBackground = ({ children, images, imagePlaceholder, className = '', selected }: PictureBookBackgroundProps) => {
   return (
-    <div className={`relative bg-white flex w-full h-full justify-center items-center overflow-hidden ${className}`}>
+    <div className={`relative bg-white flex w-full h-full justify-center items-center overflow-hidden aspect-video ${className}`}>
       {images.map((image, i) => (
         <Image
           key={image}
@@ -22,10 +22,8 @@ export const PictureBookBackground = ({ children, images, imagePlaceholder, clas
           alt=''
           fill
           quality={100}
-          className={`w-100 h-100 ease-in-out`}
+          className={`w-100 h-100 ease-in-out object-contain object-center`}
           style={{
-            objectFit: 'contain',
-            objectPosition: 'center',
             opacity: i === selected ? 1 : 0,
             filter: i === selected ? 'blur(0px)' : 'blur(3px)',
             transform: (i === selected ? 'scale(1.001)' : 'scale(2)') + (i === selected ? 'rotate(0deg)' : (i % 2 == 0 ? 'rotate(20deg)' : (i % 3 == 0) ? 'rotate(-20deg)' : 'rotate(0deg)')),
@@ -33,6 +31,7 @@ export const PictureBookBackground = ({ children, images, imagePlaceholder, clas
             transitionProperty: 'opacity filter transform',
           }}
           sizes="100vw"
+
           priority={i === selected}
         />
       ))}

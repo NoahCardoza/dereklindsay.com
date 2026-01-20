@@ -1,32 +1,45 @@
-// dynamicBlurDataUrl.js
-const baseUrl = `${process.env.VERCEL_URL
-  ? 'https://' + process.env.VERCEL_URL
-  : 'http://localhost:3000'
-  }`;
+// dynamicBlurDataUrl.ts
+import sharp from "sharp";
 
 const toBase64 = (str: string) =>
-    typeof window === 'undefined'
-      ? Buffer.from(str).toString('base64')
-      : window.btoa(str);
+  typeof window === "undefined"
+    ? Buffer.from(str).toString("base64")
+    : window.btoa(str);
 
-export async function dynamicBlurDataUrl(url: string) {
+async function fetchAsBuffer(url: string) {
+  const res = await fetch(url);
+  if (!res.ok) throw new Error(`Failed to fetch ${url}: ${res.status}`);
+  return Buffer.from(await res.arrayBuffer());
+}
 
-  const base64str = await fetch(
-    `${baseUrl}/_next/image?url=${url}&w=16&q=75`
-  ).then(async (res) =>
-    Buffer.from(await res.arrayBuffer()).toString('base64')
-  );
+export async function dynamicBlurDataUrl(imageUrl: string) {
+  try {
+    // 1) fetch the original image (remote or local URL that is publicly reachable)
+    const input = await fetchAsBuffer(imageUrl);
 
-  const blurSvg = `
-    <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 5'>
-      <filter id='b' color-interpolation-filters='sRGB'>
-        <feGaussianBlur stdDeviation='1' />
-      </filter>
+    // 2) downscale aggressively
+    const tiny = await sharp(input)
+      .resize(16) // width 16, auto height
+      .toFormat("webp", { quality: 50 }) // or "avif" if you prefer
+      .toBuffer();
 
-      <image preserveAspectRatio='none' filter='url(#b)' x='0' y='0' height='100%' width='100%' 
-      href='data:image/avif;base64,${base64str}' />
-    </svg>
-  `;
+    const base64str = tiny.toString("base64");
 
-  return `data:image/svg+xml;base64,${toBase64(blurSvg)}`;
+    // 3) wrap in an SVG blur (same idea you already have)
+    const blurSvg = `
+      <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 5'>
+        <filter id='b' color-interpolation-filters='sRGB'>
+          <feGaussianBlur stdDeviation='1' />
+        </filter>
+        <image preserveAspectRatio='none' filter='url(#b)'
+          x='0' y='0' width='100%' height='100%'
+          href='data:image/webp;base64,${base64str}' />
+      </svg>
+    `;
+
+    return `data:image/svg+xml;base64,${toBase64(blurSvg)}`;
+  } catch (error) {
+    console.error("Error generating blur data URL:", error);
+    return imageUrl; // fallback
+  }
 }

@@ -7,12 +7,17 @@ import { faAngleLeft, faAngleRight, faImage, faImages  } from '@fortawesome/free
 import Masonry, { ResponsiveMasonry } from 'react-responsive-masonry'
 import Image from 'next/image';
 import { PictureBookBackground } from './PictureBook';
-import { unstable_getImgProps as getImgProps } from 'next/image';
+import { getImageProps } from 'next/image';
 
 export default function Slideshow({ album, images, firstImageBlurredPlaceholder }: { firstImageBlurredPlaceholder: string, album: string, images: { src: string, caption: string }[] }) {
   const [index, setIndexInternal] = React.useState(0);
   const [blockViewImageExplorerEnabled, setBlockViewEnabled] = React.useState(true);
   const imageThumbnails = React.useRef<Map<number, HTMLButtonElement | null>>(new Map());
+  const [mounted, setMounted] = React.useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
 
   const setIndex = (i: number) => {
@@ -25,18 +30,17 @@ export default function Slideshow({ album, images, firstImageBlurredPlaceholder 
   }
 
   useEffect(() => {
-    const callback = (e: KeyboardEvent) => {
-      if (e.key === 'ArrowLeft') {
-        setIndex((index - 1 + images.length) % images.length);
-      } else if (e.key === 'ArrowRight') {
-        setIndex((index + 1) % images.length);
-      }
+  const onKeyDown = (e: KeyboardEvent) => {
+    if (e.key === 'ArrowLeft') {
+      setIndexInternal((prev) => (prev - 1 + images.length) % images.length);
+    } else if (e.key === 'ArrowRight') {
+      setIndexInternal((prev) => (prev + 1) % images.length);
     }
-    document.addEventListener('keydown', callback);
-    return () => {
-      document.removeEventListener('keydown', callback);
-    }
-  })
+  };
+
+  document.addEventListener('keydown', onKeyDown);
+  return () => document.removeEventListener('keydown', onKeyDown);
+}, [images.length]);
 
   return (
     <div className="h-full flex flex-col">
@@ -60,12 +64,12 @@ export default function Slideshow({ album, images, firstImageBlurredPlaceholder 
       </div>
       <div className={`sm:rounded-lg sm:shadow-md bg-slate-10 ${blockViewImageExplorerEnabled ? 'overflow-y-auto p-5' : 'flex flex-grow overflow-hidden'}`}>
         <div className={`transition-opacity duration-1000 ease-in-out ${blockViewImageExplorerEnabled ? 'opacity-100' : 'opacity-0 '}`}>
-            <ResponsiveMasonry columnsCountBreakPoints={{350: 1, 750: 2, 900: 3}}>
+            {mounted ? <ResponsiveMasonry columnsCountBreakPoints={{350: 1, 750: 2, 900: 3}}>
               <Masonry gutter={blockViewImageExplorerEnabled ? "0.5rem" : '0'}>{
                 images.map((image, i) => (
                   <img
                     key={image.src}
-                    {...getImgProps({ src: image.src, alt: `Caption: ${image.caption}`, width: 300, height: 300 }).props}
+                    {...getImageProps({ src: image.src, alt: image.caption, width: 300, height: 300 }).props}
                     className="rounded-sm w-full block cursor-pointer"
                     onClick={() => {
                       setBlockViewEnabled(false);
@@ -74,11 +78,11 @@ export default function Slideshow({ album, images, firstImageBlurredPlaceholder 
                   />
                 ))
               }</Masonry>
-          </ResponsiveMasonry>
+          </ResponsiveMasonry> : null}
         </div>
         <div className={(!blockViewImageExplorerEnabled ? 'opacity-100 h-full' : 'opacity-0 pointer-events-none	') + ' w-full flex min-w-0 transition-opacity duration-1000 ease-in-out'}>
           <button
-            className="flex items-center px-3 bg-slate-50 hidden sm:block"
+            className="items-center px-3 bg-slate-50 hidden sm:block"
             onClick={() => { changeIndex(-1) }}
           >
             <FontAwesomeIcon icon={faAngleLeft} />
@@ -116,13 +120,8 @@ export default function Slideshow({ album, images, firstImageBlurredPlaceholder 
               >
                 <Image
                   src={image.src}
-                  alt={`Caption: ${image.caption}`}
-                  style={{
-                    objectFit: 'cover',
-                    objectPosition: 'center',
-                    width: '100%',
-                    height: '100%',
-                  }}
+                  alt={`${image.caption}`}
+                  className='object-cover object-center w-full h-full'
                   width={48}
                   height={48}
                 />
@@ -132,7 +131,7 @@ export default function Slideshow({ album, images, firstImageBlurredPlaceholder 
             </div>
         </div>
           <button
-            className="flex items-center px-3 bg-slate-50 hidden sm:block"
+            className="items-center px-3 bg-slate-50 hidden sm:block"
                 onClick={() => { 
                   changeIndex(1);
              }}
